@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en" class="light-theme">
+<head>
+  <meta charset="UTF-8">
+  <title>Luxury Analog Clock</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="https://fav.farm/✅" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class="theme-toggle">
+    <button class="theme-btn active" data-theme="light">Light</button>
+    <button class="theme-btn" data-theme="dark">Dark</button>
+  </div>
+
+  <div class="container">
+    <div class="clock">
+      <div class="outer-clock-face">
+        <!-- Minute markers -->
+        <div class="minute-marks"></div>
+        
+        <!-- Main markings -->
+        <div class="marking marking-one"></div>
+        <div class="marking marking-two"></div>
+        <div class="marking marking-three"></div>
+        <div class="marking marking-four"></div>
+        
+        <!-- Brand name -->
+        <div class="brand-name">ELEGANCE</div>
+        
+        <!-- Hour Numbers -->
+        <div class="hour-number hour-12">12</div>
+        <div class="hour-number hour-1">1</div>
+        <div class="hour-number hour-2">2</div>
+        <div class="hour-number hour-3">3</div>
+        <div class="hour-number hour-4">4</div>
+        <div class="hour-number hour-5">5</div>
+        <div class="hour-number hour-6">6</div>
+        <div class="hour-number hour-7">7</div>
+        <div class="hour-number hour-8">8</div>
+        <div class="hour-number hour-9">9</div>
+        <div class="hour-number hour-10">10</div>
+        <div class="hour-number hour-11">11</div>
+        
+        <div class="center-circle"></div>
+        <div class="center-circle-inner"></div>
+      
+        <div class="clock-face">
+          <div class="hand hour-hand"></div>
+          <div class="hand min-hand"></div>
+          <div class="hand second-hand"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="digital-clock">
+      <div class="digital-time"></div>
+      <div class="digital-date"></div>
+      <div class="timezone">UTC <span id="timezone-offset"></span></div>
+    </div>
+  </div>
+
+  <style>
+    /* Theme Variables */
+    .light-theme {
+      --clock-size: 32rem;
+      --clock-face-color: #f5f5f5;
+      --clock-border-color: #e0e0e0;
+      --hour-hand-color: #222222;
+      --minute-hand-color: #444444;
+      --second-hand-color: #f03e3e;
+      --marker-color: #555555;
+      --number-color: #333333;
+      --shadow-color: rgba(0, 0, 0, 0.2);
+      --digital-color: #333333;
+      --digital-bg: rgba(255, 255, 255, 0.9);
+      --bg-overlay: rgba(255, 255, 255, 0.85);
+      --brand-color: #888;
+      --minute-marker-color: rgba(0, 0, 0, 0.1);
+      --theme-btn-bg: #f1f3f5;
+      --theme-btn-color: #333;
+      --theme-btn-active-bg: #333;
+      --theme-btn-active-color: #fff;
+    }
+
+    .dark-theme {
+      --clock-size: 32rem;
+      --clock-face-color: #1a1a1a;
+      --clock-border-color: #333;
+      --hour-hand-color: #e0e0e0;
+      --minute-hand-color: #cccccc;
+      --second-hand-color: #ff6b6b;
+      --marker-color: #aaaaaa;
+      --number-color: #f5f5f5;
+      --shadow-color: rgba(0, 0, 0, 0.5);
+      --digital-color: #f5f5f5;
+      --digital-bg: rgba(40, 40, 40, 0.9);
+      --bg-overlay: rgba(20, 20, 20, 0.85);
+      --brand-color: #aaa;
+      --minute-marker-color: rgba(255, 255, 255, 0.2);
+      --theme-btn-bg: #333;
+      --theme-btn-color: #f1f3f5;
+      --theme-btn-active-bg: #f1f3f5;
+      --theme-btn-active-color: #333;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 10px;
+      background: linear-gradient(135deg, #e0eafc, #cfdef3);
+      background-size: cover;
+      font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+      text-align: center;
+      height: 100%;
+      transition: all 0.5s ease;
+    }
+
+    body {
+      margin: 0;
+      font-size: 2rem;
+      display: flex;
+      min-height: 100vh;
+      align-items: center;
+      justify-content: center;
+      background-image: url('https://images.unsplash.com/photo-1473656817456-d9559981e321?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      transition: all 0.5s ease;
+    }
+    
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-overlay);
+      backdrop-filter: blur(5px);
+      transition: background 0.5s ease;
+    }
+
+    .container {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      z-index: 10;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 0.5rem;
+      z-index: 100;
+    }
+
+    .theme-btn {
+      padding: 0.8rem 1.5rem;
+      background: var(--theme-btn-bg);
+      color: var(--theme-btn-color);
+      border: none;
+      border-radius: 2rem;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      font-size: 1.4rem;
+    }
+
+    .theme-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .theme-btn.active {
+      background: var(--theme-btn-active-bg);
+      color: var(--theme-btn-active-color);
+    }
+
+    .clock {
+      width: var(--clock-size);
+      height: var(--clock-size);
+      position: relative;
+      padding: 2rem;
+      margin-bottom: 3rem;
+      transition: all 0.5s ease;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+
+    .outer-clock-face {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: var(--clock-face-color);
+      overflow: hidden;
+      box-shadow: 
+        0 10px 35px var(--shadow-color),
+        inset 0 0 10px rgba(0,0,0,0.1);
+      transition: all 0.5s ease;
+      border: 1px solid var(--clock-border-color);
+    }
+    
+    .outer-clock-face::after {
+      transform: rotate(90deg);
+    }
+    
+    .outer-clock-face::before,
+    .outer-clock-face::after,
+    .outer-clock-face .marking {
+      display: none; /* Hide the marking strips */
+    }
+
+    .outer-clock-face .marking {
+      width: 3px;
+    }
+    
+    .outer-clock-face .marking-one {
+      transform: rotate(30deg);
+    }
+    
+    .outer-clock-face .marking-two {
+      transform: rotate(60deg);
+    }
+    
+    .outer-clock-face .marking-three {
+      transform: rotate(120deg);
+    }
+    
+    .outer-clock-face .marking-four {
+      transform: rotate(150deg);
+    }
+
+    /* Minute markers */
+    .minute-marks {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+    }
+
+    .minute-marks::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 1px solid transparent;
+      border-top: 1px solid var(--minute-marker-color);
+      border-bottom: 1px solid var(--minute-marker-color);
+      box-sizing: border-box;
+    }
+
+    /* Generate minute markers */
+    .minute-marks::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: repeating-conic-gradient(
+        from 0deg,
+        transparent 0deg,
+        transparent 6deg,
+        var(--minute-marker-color) 6deg,
+        var(--minute-marker-color) 6.5deg
+      );
+      border-radius: 50%;
+      opacity: 0.7;
+    }
+
+    /* Brand name */
+    .brand-name {
+      position: absolute;
+      top: 35%;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--brand-color);
+      letter-spacing: 1px;
+      z-index: 3;
+      opacity: 0.7;
+      transition: all 0.5s ease;
+    }
+
+    .hour-number {
+      position: absolute;
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      font-weight: 500;
+      color: var(--number-color);
+      z-index: 10;
+      width: 4rem;
+      height: 4rem;
+      text-align: center;
+      line-height: 4rem;
+      transition: all 0.5s ease;
+    }
+    
+    .hour-12 { top: 1.2rem; left: 50%; transform: translateX(-50%); }
+    .hour-3 { top: 50%; right: 1.2rem; transform: translateY(-50%); }
+    .hour-6 { bottom: 1.2rem; left: 50%; transform: translateX(-50%); }
+    .hour-9 { top: 50%; left: 1.2rem; transform: translateY(-50%); }
+    
+    .hour-1 { top: 7%; right: 25%; }
+    .hour-2 { top: 25%; right: 7%; }
+    .hour-4 { top: 75%; right: 7%; }
+    .hour-5 { top: 93%; right: 25%; }
+    .hour-7 { top: 93%; left: 25%; }
+    .hour-8 { top: 75%; left: 7%; }
+    .hour-10 { top: 25%; left: 7%; }
+    .hour-11 { top: 7%; left: 25%; }
+
+    .center-circle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 1.8rem;
+      height: 1.8rem;
+      border-radius: 50%;
+      background: var(--second-hand-color);
+      transform: translate(-50%, -50%);
+      z-index: 11;
+      transition: all 0.5s ease;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .center-circle-inner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0.8rem;
+      height: 0.8rem;
+      border-radius: 50%;
+      background: var(--clock-face-color);
+      transform: translate(-50%, -50%);
+      z-index: 12;
+      transition: all 0.5s ease;
+    }
+
+    .clock-face {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform: translateY(-3px); /* account for the height of the clock hands */
+      z-index: 10;
+    }
+
+    .hand {
+      position: absolute;
+      top: 50%;
+      right: 50%;
+      transform-origin: 100% 50%;
+      transform: rotate(90deg);
+      transition: all 0.05s cubic-bezier(0.1, 2.7, 0.58, 1);
+      z-index: 10;
+    }
+
+    .hour-hand {
+      width: 35%;
+      height: 8px;
+      background: var(--hour-hand-color);
+      border-radius: 4px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      transition: background 0.5s ease;
+    }
+
+    .min-hand {
+      width: 45%;
+      height: 6px;
+      background: var(--minute-hand-color);
+      border-radius: 3px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      transition: background 0.5s ease;
+    }
+
+    .second-hand {
+      width: 55%;
+      height: 3px;
+      background: var(--second-hand-color);
+      border-radius: 2px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      transition: background 0.5s ease;
+    }
+    
+    /* Tail for second hand */
+    .second-hand::after {
+      content: '';
+      position: absolute;
+      width: 20%;
+      height: 100%;
+      background: var(--second-hand-color);
+      top: 0;
+      right: 100%;
+      border-radius: 2px;
+      transition: background 0.5s ease;
+    }
+
+    .digital-clock {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 500;
+      color: var(--digital-color);
+      background: var(--digital-bg);
+      padding: 1.5rem 3.5rem;
+      border-radius: 1.5rem;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      transition: all 0.5s ease;
+      transform: translateY(0);
+      position: relative;
+      min-width: 320px;
+    }
+
+    .digital-clock:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+
+    .digital-time {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      letter-spacing: 2px;
+    }
+    
+    .digital-date {
+      font-size: 1.5rem;
+      color: var(--digital-color);
+      opacity: 0.8;
+      margin-bottom: 0.5rem;
+    }
+
+    .timezone {
+      font-size: 1.2rem;
+      opacity: 0.6;
+    }
+
+    @media (max-width: 768px) {
+      :root {
+        --clock-size: 28rem;
+      }
+      
+      .hour-number {
+        font-size: 2rem;
+      }
+      
+      .digital-time {
+        font-size: 3rem;
+      }
+      
+      .digital-date {
+        font-size: 1.3rem;
+      }
+
+      .theme-toggle {
+        top: 10px;
+        right: 10px;
+      }
+
+      .theme-btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 1.2rem;
+      }
+    }
+    
+    @media (max-width: 600px) {
+      :root {
+        --clock-size: 25rem;
+      }
+      
+      .hour-number {
+        font-size: 1.6rem;
+      }
+      
+      .digital-time {
+        font-size: 2.5rem;
+      }
+      
+      .digital-date {
+        font-size: 1.2rem;
+      }
+
+      .brand-name {
+        font-size: 1rem;
+      }
+
+      .theme-toggle {
+        flex-direction: column;
+        top: 10px;
+        right: 10px;
+        gap: 0.3rem;
+      }
+
+      .theme-btn {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+      }
+    }
+  </style>
+
+  <script>
+    const secondHand = document.querySelector('.second-hand');
+    const minsHand = document.querySelector('.min-hand');
+    const hourHand = document.querySelector('.hour-hand');
+    const digitalTime = document.querySelector('.digital-time');
+    const digitalDate = document.querySelector('.digital-date');
+    const timezoneDisplay = document.querySelector('#timezone-offset');
+    const themeButtons = document.querySelectorAll('.theme-btn');
+    const html = document.documentElement;
+
+    // Display timezone
+    const timezoneOffset = new Date().getTimezoneOffset();
+    const offsetHours = Math.abs(Math.floor(timezoneOffset / 60));
+    const offsetMinutes = Math.abs(timezoneOffset % 60);
+    const offsetSign = timezoneOffset <= 0 ? "+" : "-";
+    timezoneDisplay.textContent = `${offsetSign}${offsetHours.toString().padStart(2, '0')}:${offsetMinutes.toString().padStart(2, '0')}`;
+
+    function setDate() {
+      const now = new Date();
+
+      // Update analog clock hands
+      const seconds = now.getSeconds();
+      const secondsDegrees = ((seconds / 60) * 360) + 90;
+      
+      // Fix transition glitch when seconds hand completes a full circle
+      if (seconds === 0) {
+        secondHand.style.transition = 'none';
+      } else {
+        secondHand.style.transition = 'all 0.05s cubic-bezier(0.1, 2.7, 0.58, 1)';
+      }
+      
+      secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+
+      const mins = now.getMinutes();
+      const minsDegrees = ((mins / 60) * 360) + ((seconds/60)*6) + 90;
+      minsHand.style.transform = `rotate(${minsDegrees}deg)`;
+
+      const hour = now.getHours();
+      const hourDegrees = ((hour / 12) * 360) + ((mins/60)*30) + 90;
+      hourHand.style.transform = `rotate(${hourDegrees}deg)`;
+      
+      // Update digital clock
+      const formattedHour = hour % 12 || 12; // Convert to 12-hour format
+      const amPm = hour >= 12 ? 'PM' : 'AM';
+      const formattedMinutes = mins < 10 ? `0${mins}` : mins;
+      const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+      
+      digitalTime.textContent = `${formattedHour}:${formattedMinutes}:${formattedSeconds} ${amPm}`;
+      
+      // Update date
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      digitalDate.textContent = now.toLocaleDateString('en-US', options);
+    }
+
+    // Theme switcher
+    themeButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Remove active class from all buttons
+        themeButtons.forEach(btn => btn.classList.remove('active'));
+        
+        // Add active class to clicked button
+        button.classList.add('active');
+        
+        // Apply theme
+        const theme = button.dataset.theme;
+        html.className = '';
+        html.classList.add(`${theme}-theme`);
+        
+        // Store theme preference
+        localStorage.setItem('clockTheme', theme);
+      });
+    });
+
+    // Load saved theme preference
+    const savedTheme = localStorage.getItem('clockTheme');
+    if (savedTheme) {
+      html.className = '';
+      html.classList.add(`${savedTheme}-theme`);
+      
+      // Update active button
+      themeButtons.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.theme === savedTheme) {
+          btn.classList.add('active');
+        }
+      });
+    }
+
+    // Clock tick sound (optional - uncomment to enable)
+    /*
+    const tickSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-clock-tick-1059.mp3');
+    function playTickSound() {
+      tickSound.currentTime = 0;
+      tickSound.volume = 0.2;
+      tickSound.play();
+    }
+    */
+
+    setInterval(setDate, 1000);
+    setDate(); // Initial call to avoid delay
+
+    // Add smooth shadow movement
+    document.addEventListener('mousemove', (e) => {
+      const xPos = (e.clientX / window.innerWidth) - 0.5;
+      const yPos = (e.clientY / window.innerHeight) - 0.5;
+      
+      const clock = document.querySelector('.clock');
+      clock.style.boxShadow = `
+        ${xPos * 20}px ${yPos * 20}px 35px rgba(0, 0, 0, 0.15),
+        inset 0 0 10px rgba(0, 0, 0, 0.1)
+      `;
+    });
+  </script>
+</body>
+</html>

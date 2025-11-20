@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mouse Shadow</title>
+  <link rel="icon" href="https://fav.farm/✅" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      min-height: 100vh;
+      background: linear-gradient(120deg, #38bdf8, #a78bfa, #f472b6, #4ade80);
+      background-size: 400% 400%;
+      animation: gradientBG 12s ease-in-out infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Montserrat', sans-serif;
+      overflow: hidden;
+    }
+    @keyframes gradientBG {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+    .particles {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.5;
+      animation: floatParticle linear infinite;
+    }
+    @keyframes floatParticle {
+      0% { transform: translateY(0) scale(1); opacity: 0.7; }
+      80% { opacity: 0.7; }
+      100% { transform: translateY(-100vh) scale(1.2); opacity: 0; }
+    }
+    .hero {
+      min-height: 60vh;
+      min-width: 60vw;
+      background: rgba(255,255,255,0.18);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18), 0 0 0 4px #fff3;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 40px;
+      border: 2.5px solid rgba(255,255,255,0.25);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: box-shadow 0.3s, border 0.3s;
+      margin: 2rem;
+      z-index: 1;
+      position: relative;
+      border-top: 2.5px solid #38bdf8cc;
+      border-bottom: 2.5px solid #f472b6cc;
+    }
+    .hero:hover {
+      box-shadow: 0 16px 48px 0 rgba(31, 38, 135, 0.28), 0 0 0 8px #a78bfa44;
+      border-top: 2.5px solid #a78bfa;
+      border-bottom: 2.5px solid #4ade80;
+    }
+    h1 {
+      font-size: 7vw;
+      max-width: 90vw;
+      margin: 0;
+      padding: 2rem 1rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      background: linear-gradient(90deg, #38bdf8, #a78bfa, #f472b6, #4ade80);
+      background-size: 200% 200%;
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      animation: gradientText 6s ease-in-out infinite, pulseGlow 2.5s infinite alternate;
+      border-radius: 16px;
+      transition: transform 0.2s, text-shadow 0.2s, filter 0.2s;
+      cursor: pointer;
+      user-select: none;
+      text-align: center;
+      text-shadow:
+        0 2px 24px rgba(56,189,248,0.25),
+        0 1px 2px rgba(0,0,0,0.12),
+        0 0 32px #fff8,
+        0 0 8px #a78bfa88;
+      filter: drop-shadow(0 0 12px #38bdf8cc);
+    }
+    @keyframes gradientText {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+    @keyframes pulseGlow {
+      0% { filter: drop-shadow(0 0 12px #38bdf8cc); }
+      100% { filter: drop-shadow(0 0 32px #f472b6cc); }
+    }
+    h1:hover {
+      transform: scale(1.04);
+      filter: drop-shadow(0 0 32px #4ade80cc);
+      text-shadow:
+        0 2px 32px #fff8,
+        0 1px 2px #0002,
+        0 0 48px #a78bfa,
+        0 0 16px #38bdf8;
+    }
+    h1:active {
+      transform: scale(0.97);
+    }
+    @media (max-width: 600px) {
+      .hero {
+        min-width: 90vw;
+        min-height: 40vh;
+        padding: 1rem;
+      }
+      h1 {
+        font-size: 2.5rem;
+        padding: 1rem 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="particles" id="particles"></div>
+  <div class="hero">
+    <h1 contenteditable spellcheck="false">🔥WOAH!</h1>
+  </div>
+<script>
+  // Particle background
+  const particles = document.getElementById('particles');
+  const colors = ['#38bdf8', '#a78bfa', '#f472b6', '#4ade80', '#fff', '#fbbf24'];
+  function createParticle() {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 18 + 8;
+    p.style.width = p.style.height = `${size}px`;
+    p.style.left = `${Math.random() * 100}vw`;
+    p.style.bottom = `-40px`;
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.opacity = Math.random() * 0.4 + 0.3;
+    p.style.animationDuration = `${Math.random() * 6 + 6}s`;
+    particles.appendChild(p);
+    setTimeout(() => p.remove(), 13000);
+  }
+  setInterval(createParticle, 350);
+  for(let i=0;i<18;i++) createParticle();
+
+  // Mouse shadow effect
+  const hero = document.querySelector('.hero');
+  const text = hero.querySelector('h1');
+  const walk = 500; // 500px
+
+  function shadow(e) {
+    const { offsetWidth: width, offsetHeight: height } = hero;
+    let { offsetX: x, offsetY: y } = e;
+    if (this !== e.target) {
+      x = x + e.target.offsetLeft;
+      y = y + e.target.offsetTop;
+    }
+    const xWalk = Math.round((x / width * walk) - (walk / 2));
+    const yWalk = Math.round((y / height * walk) - (walk / 2));
+    text.style.textShadow = `
+      ${xWalk}px ${yWalk}px 32px rgba(255,0,255,0.7),
+      ${xWalk * -1}px ${yWalk}px 32px rgba(0,255,255,0.7),
+      ${yWalk}px ${xWalk * -1}px 32px rgba(0,255,0,0.7),
+      ${yWalk * -1}px ${xWalk}px 32px rgba(0,0,255,0.7),
+      0 2px 32px #fff8, 0 1px 2px #0002
+    `;
+  }
+  hero.addEventListener('mousemove', shadow);
+</script>
+</body>
+</html>

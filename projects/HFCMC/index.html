@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" class="light-mode">
+<head>
+  <meta charset="UTF-8">
+  <title>Multi-Select Checkbox Interface</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="https://fav.farm/✅" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <button class="theme-toggle" aria-label="Toggle dark mode">
+    <svg class="sun" viewBox="0 0 24 24">
+      <path d="M12 17.5C8.96243 17.5 6.5 15.0376 6.5 12C6.5 8.96243 8.96243 6.5 12 6.5C15.0376 6.5 17.5 8.96243 17.5 12C17.5 15.0376 15.0376 17.5 12 17.5ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16ZM11 1H13V4H11V1ZM11 20H13V23H11V20ZM3.5 5.5L5 4L7.5 6.5L6 8L3.5 5.5ZM16.5 17.5L18 16L20.5 18.5L19 20L16.5 17.5ZM3.5 18.5L6 16L7.5 17.5L5 20L3.5 18.5ZM16.5 6.5L19 4L20.5 5.5L18 8L16.5 6.5ZM1 11H4V13H1V11ZM20 11H23V13H20V11Z"/>
+    </svg>
+    <svg class="moon" viewBox="0 0 24 24">
+      <path d="M10 7C10 10.866 13.134 14 17 14C18.9584 14 20.729 13.1957 22 11.8995C21.4025 16.1456 17.7288 19.4253 13.3219 19.9421C8.09165 20.5497 3.46875 16.7499 3.46875 11.5C3.46875 7.80879 5.96879 4.69233 9.3909 3.68597C9.52555 3.64832 9.62401 3.55029 9.65258 3.41507C9.68292 3.27163 9.6309 3.12191 9.51328 3.03763C8.56655 2.38039 8 1.28804 8 0.5C8 0.289917 8.03173 0.289917 8.05872 0.289917C8.10168 0.289917 8.07701 0.332252 8.23403 0.371405C13.1371 1.73671 17 6.2497 17 11.5C17 12.5356 16.8873 13.547 16.6729 14.5186C16.6707 14.5278 16.6673 14.536 16.663 14.5432C16.6584 14.5515 16.6524 14.5591 16.6459 14.5658C16.6317 14.5801 16.614 14.5894 16.5953 14.5921C16.5796 14.5944 16.5635 14.5913 16.5495 14.5833C15.1692 13.797 13.4872 13.5 12 13.5C11.0805 13.5 10 13.5 10 13C10 9.96231 12.4624 7.5 15.5 7.5C16.2508 7.5 16.9099 7.73372 17.4629 8.09761C17.4948 8.11791 17.5315 8.12571 17.5679 8.1193C17.6044 8.11289 17.6375 8.09262 17.6608 8.06251C17.7055 8.00759 17.7109 7.93327 17.6743 7.87278C16.5012 5.94469 14.3988 4.65319 12 4.5C10.9265 4.44441 9.27295 4.5 9.5 6C9.5 6.5 9.5 7 10 7Z"/>
+    </svg>
+  </button>
+
+  <div class="bg-pattern"></div>
+
+  <div class="app-header">
+    <h1 class="app-title">Multi-Select Checklist</h1>
+    <p class="app-subtitle">Easily manage your tasks with our interactive checklist. Check off items individually or select multiple at once.</p>
+  </div>
+  
+  <div class="container">
+    <form id="add-item-form" style="display: flex; gap: 0.5rem; margin-bottom: 1rem; width: 100%; max-width: 550px;">
+      <input id="new-item-input" type="text" placeholder="Add a new task..." style="flex: 1; padding: 0.75rem 1rem; border-radius: var(--border-radius); border: 1px solid var(--border-color); font-size: 1rem;" required />
+      <button type="submit" style="padding: 0.75rem 1.5rem; border-radius: var(--border-radius); border: none; background: var(--primary-color); color: white; font-weight: 500; cursor: pointer;">Add</button>
+    </form>
+    <div class="inbox">
+      <div class="inbox-header">
+        <h2>Task Manager</h2>
+        <span class="inbox-count">9 items</span>
+      </div>
+      <div class="items-container">
+        <div class="item">
+          <label class="checkbox-container">
+            <input type="checkbox">
+            <span class="checkmark"></span>
+          </label>
+          <p class="item-text">This is an inbox layout.</p>
+          <button class="delete-item" title="Delete" style="background: none; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; margin-right: 1rem;">🗑️</button>
+        </div>
+        <div class="item">
+          <label class="checkbox-container">
+            <input type="checkbox">
+            <span class="checkmark"></span>
+          </label>
+          <p class="item-text">Check one item</p>
+          <button class="delete-item" title="Delete" style="background: none; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; margin-right: 1rem;">🗑️</button>
+        </div>
+        <div class="item">
+          <label class="checkbox-container">
+            <input type="checkbox">
+            <span class="checkmark"></span>
+          </label>
+          <p class="item-text">Hold down your Shift key</p>
+          <button class="delete-item" title="Delete" style="background: none; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; margin-right: 1rem;">🗑️</button>
+        </div>
+        <div class="item">
+          <label class="checkbox-container">
+            <input type="checkbox">
+            <span class="checkmark"></span>
+          </label>
+          <p class="item-text">Check a lower item</p>
+          <button class="delete-item" title="Delete" style="background: none; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; margin-right: 1rem;">🗑️</button>
+        </div>
+        <div class="item">
+          <label class="checkbox-container">
+            <input type="checkbox">
+            <span class="checkmark"></span>
+          </label>
+          <p class="item-text">Everything in between should also be set to checked</p>
+          <button class="delete-item" title="Delete" style="background: none; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; margin-right: 1rem;">🗑️</button>
+        </div>
+        <div class="item">
+          <label class="checkbox-container">
+            <input type="checkbox">
+            <span class="checkmark"></span>
+          </label>
+          <p class="item-text">Try do it without any libraries</p>
+          <button class="delete-item" title="Delete" style="background: none; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; margin-right: 1rem;">🗑️</button>
+        </div>
+        <div class="item">
+          <label class="checkbox-container">
+            <input type="checkbox">
+            <span class="checkmark"></span>
+          </label>
+          <p class="item-text">Just regular JavaScript</p>
+          <button class="delete-item" title="Delete" style="background: none; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; margin-right: 1rem;">🗑️</button>
+        </div>
+        <div class="item">
+          <label class="checkbox-container">
+            <input type="checkbox">
+            <span class="checkmark"></span>
+          </label>
+          <p class="item-text">Good Luck!</p>
+          <button class="delete-item" title="Delete" style="background: none; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; margin-right: 1rem;">🗑️</button>
+        </div>
+        <div class="item">
+          <label class="checkbox-container">
+            <input type="checkbox">
+            <span class="checkmark"></span>
+          </label>
+          <p class="item-text">Don't forget to tweet your result!</p>
+          <button class="delete-item" title="Delete" style="background: none; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; margin-right: 1rem;">🗑️</button>
+        </div>
+      </div>
+    </div>
+
+    <button class="select-all">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 6L9 17L4 12"></path>
+      </svg>
+      Select All
+    </button>
+  </div>
+
+  <div class="helper-text">
+    <svg viewBox="0 0 24 24">
+      <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16zM11 7h2v2h-2V7zm0 4h2v6h-2v-6z"/>
+    </svg>
+    Pro tip: Use <span class="keyboard-shortcut">Shift</span> + <span class="keyboard-shortcut">Click</span> to select multiple items at once.
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

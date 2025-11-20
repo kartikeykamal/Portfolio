@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Secret Code Detector</title>
+    <link rel="icon" href="https://fav.farm/✅" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --bg-color: #0f172a;
+        --text-color: #e2e8f0;
+        --accent-color: #38bdf8;
+        --success-color: #4ade80;
+        --warning-color: #fb923c;
+        --error-color: #f87171;
+        --border-color: #334155;
+        --video-bg: #1e293b;
+      }
+      
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        line-height: 1.6;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        padding: 2rem;
+        background-image: 
+          radial-gradient(circle at 25% 25%, rgba(56, 189, 248, 0.05) 0%, transparent 50%),
+          radial-gradient(circle at 75% 75%, rgba(244, 114, 182, 0.05) 0%, transparent 50%);
+        position: relative;
+      }
+      
+      .container {
+        max-width: 800px;
+        width: 100%;
+        text-align: center;
+        z-index: 10;
+        position: relative;
+      }
+      
+      h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        color: var(--accent-color);
+        position: relative;
+        display: inline-block;
+        text-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+        animation: pulse 2s infinite;
+      }
+      
+      @keyframes pulse {
+        0% { text-shadow: 0 0 10px rgba(56, 189, 248, 0.3); }
+        50% { text-shadow: 0 0 20px rgba(56, 189, 248, 0.5); }
+        100% { text-shadow: 0 0 10px rgba(56, 189, 248, 0.3); }
+      }
+      
+      h1::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+      }
+      
+      p {
+        margin-bottom: 2rem;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      
+      .key-display {
+        background-color: rgba(255, 255, 255, 0.05);
+        border: 2px solid var(--border-color);
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        overflow: hidden;
+        position: relative;
+        backdrop-filter: blur(5px);
+      }
+      
+      .key-display.success {
+        border-color: var(--success-color);
+        background-color: rgba(74, 222, 128, 0.1);
+        animation: successPulse 1.5s infinite;
+      }
+      
+      @keyframes successPulse {
+        0% { box-shadow: 0 0 10px rgba(74, 222, 128, 0.3); }
+        50% { box-shadow: 0 0 20px rgba(74, 222, 128, 0.6); }
+        100% { box-shadow: 0 0 10px rgba(74, 222, 128, 0.3); }
+      }
+      
+      .key-history {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
+      
+      .key-badge {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 5px;
+        padding: 0.5rem 1rem;
+        font-family: monospace;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transform: translateY(0);
+      }
+      
+      .key-badge::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--accent-color);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -1;
+      }
+      
+      .key-badge.active {
+        animation: popIn 0.3s forwards;
+      }
+      
+      @keyframes popIn {
+        0% { transform: scale(0.8); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+      }
+      
+      .key-badge.active::before {
+        opacity: 0.2;
+      }
+      
+      .key-badge.matched {
+        background-color: rgba(74, 222, 128, 0.2);
+        color: var(--success-color);
+        animation: matchPulse 1s infinite;
+      }
+      
+      @keyframes matchPulse {
+        0% { transform: translateY(0); }
+        50% { transform: translateY(-3px); }
+        100% { transform: translateY(0); }
+      }
+      
+      .hint {
+        margin-top: 0.5rem;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.9rem;
+        font-style: italic;
+      }
+      
+      .progress-container {
+        height: 6px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+        margin-top: 1rem;
+        overflow: hidden;
+        position: relative;
+      }
+      
+      .progress-bar {
+        height: 100%;
+        width: 0%;
+        background-color: var(--accent-color);
+        transition: width 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+        position: relative;
+      }
+      
+      .progress-bar::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, 
+          transparent 0%, 
+          rgba(255, 255, 255, 0.2) 50%, 
+          transparent 100%);
+        animation: progressShine 1.5s linear infinite;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      
+      .progress-bar.active::after {
+        opacity: 1;
+      }
+      
+      @keyframes progressShine {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+      }
+      
+      /* Video container */
+      .video-container {
+        width: 100%;
+        max-width: 640px;
+        margin: 2rem auto 0;
+        border-radius: 10px;
+        background-color: var(--video-bg);
+        overflow: hidden;
+        display: none;
+        border: 2px solid var(--border-color);
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+      
+      .video-container.visible {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+        animation: videoReveal 1s forwards;
+      }
+      
+      @keyframes videoReveal {
+        0% { transform: translateY(20px); opacity: 0; }
+        100% { transform: translateY(0); opacity: 1; }
+      }
+      
+      .video-title {
+        font-family: 'Press Start 2P', cursive;
+        font-size: 1.2rem;
+        color: var(--accent-color);
+        padding: 1rem;
+        background-color: rgba(0, 0, 0, 0.3);
+        text-shadow: 0 0 5px var(--accent-color);
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .video-title::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, 
+          transparent 0%, 
+          rgba(255, 255, 255, 0.2) 50%, 
+          transparent 100%);
+        animation: titleShine 3s linear infinite;
+      }
+      
+      @keyframes titleShine {
+        0% { left: -100%; }
+        100% { left: 100%; }
+      }
+      
+      .video-wrapper {
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        height: 0;
+        overflow: hidden;
+      }
+      
+      .video-wrapper video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+
+      .rewards {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 5;
+      }
+      
+      /* Special effects */
+      .particle {
+        position: absolute;
+        background-color: var(--accent-color);
+        pointer-events: none;
+        border-radius: 50%;
+        z-index: 1;
+      }
+      
+      @keyframes floatUp {
+        0% {
+          transform: translateY(0) rotate(0);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-100vh) rotate(360deg);
+          opacity: 0;
+        }
+      }
+      
+      /* Confetti */
+      .confetti {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        z-index: 1;
+        pointer-events: none;
+      }
+      
+      /* Background grid */
+      .grid-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(var(--border-color) 1px, transparent 1px),
+                          linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
+        background-size: 50px 50px;
+        background-position: center;
+        opacity: 0.05;
+        z-index: -1;
+      }
+      
+      /* Keyboard visual */
+      .keyboard-visual {
+        margin-top: 2rem;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        perspective: 500px;
+      }
+      
+      .key {
+        width: 40px;
+        height: 40px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: monospace;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+        transform-style: preserve-3d;
+      }
+      
+      .key:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+      
+      .key.pressed {
+        transform: translateY(2px);
+        box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+        background-color: var(--accent-color);
+        color: white;
+        animation: keyPress 0.3s forwards;
+      }
+      
+      @keyframes keyPress {
+        0% { transform: translateY(0) scale(1); }
+        50% { transform: translateY(2px) scale(0.95); }
+        100% { transform: translateY(0) scale(1); }
+      }
+      
+      /* Sound toggle */
+      .sound-toggle {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 1px solid var(--border-color);
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      
+      .sound-toggle:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+      
+      .sound-toggle i {
+        font-size: 1.2rem;
+      }
+      
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 2rem;
+        }
+        
+        .key-badge {
+          padding: 0.4rem 0.7rem;
+          font-size: 0.9rem;
+        }
+        
+        .keyboard-visual {
+          display: none;
+        }
+        
+        .key {
+          width: 30px;
+          height: 30px;
+          font-size: 0.7rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid-background"></div>
+    
+    <div class="sound-toggle" id="soundToggle" title="Toggle sound effects">
+      <i>🔊</i>
+    </div>
+    
+    <div class="container">
+      <h1>Hello, Stranger</h1>
+      <p>Type the secret code to unlock a special surprise. Watch the keys you type and try to guess the pattern!</p>
+      
+      <div class="key-display">
+        <div class="key-history" id="keyHistory"></div>
+        <div class="hint">Press any keys to start... <span class="hint-text">Hint: try typing "stranger"</span></div>
+        <div class="progress-container">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+      </div>
+      
+      <div class="keyboard-visual" id="keyboardVisual">
+        <!-- Keys will be generated by JavaScript -->
+      </div>
+      
+      <div class="video-container" id="videoContainer">
+        <div class="video-title">YOUR SURPRISE IS READY!</div>
+        <div class="video-wrapper">
+          <video id="rickroll" width="560" height="315" controls autoplay style="background:black; width:100%; height:100%; display:block;">
+            <source id="rickrollSource" src="Rick Roll.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+    </div>
+    
+    <div class="rewards" id="rewards"></div>
+
+    <script>
+      // Constants and elements
+      const secretCode = "stranger";
+      const keyHistory = document.getElementById('keyHistory');
+      const keyDisplay = document.querySelector('.key-display');
+      const progressBar = document.getElementById('progressBar');
+      const videoContainer = document.getElementById('videoContainer');
+      const videoElement = document.getElementById('rickroll');
+      const videoSource = document.getElementById('rickrollSource');
+      const rewards = document.getElementById('rewards');
+      const keyboardVisual = document.getElementById('keyboardVisual');
+      const soundToggle = document.getElementById('soundToggle');
+      
+      // State
+      let pressed = [];
+      let videoStarted = false;
+      let soundEnabled = true;
+      
+      // Audio elements
+      const keySound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-single-key-press-in-a-laptop-2542.mp3');
+      const successSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3');
+      const backgroundMusic = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-tech-house-vibes-130.mp3');
+      backgroundMusic.loop = true;
+      backgroundMusic.volume = 0.3;
+      
+      // Create keyboard visual
+      function createKeyboard() {
+        const keys = 'qwertyuiopasdfghjklzxcvbnm'.split('');
+        keyboardVisual.innerHTML = '';
+        
+        keys.forEach(key => {
+          const keyElement = document.createElement('div');
+          keyElement.className = 'key';
+          keyElement.textContent = key;
+          keyElement.dataset.key = key;
+          keyboardVisual.appendChild(keyElement);
+        });
+      }
+      
+      // Create visual key badges
+      function createKeyBadges() {
+        keyHistory.innerHTML = '';
+        const keys = pressed.slice(-10); // Show last 10 keys
+        
+        keys.forEach((key, i) => {
+          const keyBadge = document.createElement('div');
+          keyBadge.className = 'key-badge';
+          keyBadge.textContent = key;
+          
+          // Check if part of the secret code
+          if (keys.slice(0, i+1).join('').includes(secretCode)) {
+            keyBadge.classList.add('matched');
+          }
+          
+          // Highlight last key
+          if (i === keys.length - 1) {
+            keyBadge.classList.add('active');
+          }
+          
+          keyHistory.appendChild(keyBadge);
+        });
+      }
+      
+      // Update progress bar based on match
+      function updateProgressBar() {
+        const recent = pressed.join('');
+        const progress = recent.includes(secretCode) ? 100 : 0;
+        progressBar.style.width = `${progress}%`;
+        
+        if (progress === 100) {
+          progressBar.classList.add('active');
+        } else {
+          progressBar.classList.remove('active');
+        }
+        
+        if (progress === 100 && !videoStarted) {
+          keyDisplay.classList.add('success');
+          videoStarted = true;
+          
+          if (soundEnabled) {
+            successSound.play();
+            setTimeout(() => {
+              backgroundMusic.play();
+            }, 1000);
+          }
+          
+          // Create particle effect
+          createParticleEffect();
+          
+          // Create confetti effect
+          createConfetti();
+          
+          // Show video with Rick Roll
+          setTimeout(() => {
+            videoContainer.classList.add('visible');
+            // Set video source with autoplay
+            videoSource.src = "Rick Roll.mp4";
+            videoElement.load();
+            videoElement.play();
+          }, 1000);
+        }
+      }
+      
+      // Create particle effects
+      function createParticleEffect() {
+        const colors = ['#38bdf8', '#f472b6', '#4ade80', '#fb923c', '#a78bfa'];
+        
+        for (let i = 0; i < 50; i++) {
+          setTimeout(() => {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            const size = Math.random() * 10 + 5;
+            const x = Math.random() * window.innerWidth;
+            const y = window.innerHeight;
+            
+            particle.style.width = particle.style.height = `${size}px`;
+            particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            particle.style.left = `${x}px`;
+            particle.style.top = `${y}px`;
+            particle.style.animation = `floatUp ${Math.random() * 3 + 2}s ease-out forwards`;
+            
+            rewards.appendChild(particle);
+            setTimeout(() => particle.remove(), 5000);
+          }, i * 100);
+        }
+      }
+      
+      // Create confetti effect
+      function createConfetti() {
+        const colors = ['#38bdf8', '#f472b6', '#4ade80', '#fb923c', '#a78bfa'];
+        
+        for (let i = 0; i < 100; i++) {
+          setTimeout(() => {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            
+            const size = Math.random() * 10 + 5;
+            const shape = Math.random() > 0.5 ? '50%' : '0%';
+            const x = Math.random() * window.innerWidth;
+            const y = -20;
+            
+            confetti.style.width = `${size}px`;
+            confetti.style.height = `${size}px`;
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.borderRadius = shape;
+            confetti.style.left = `${x}px`;
+            confetti.style.top = `${y}px`;
+            
+            const animationDuration = Math.random() * 3 + 2;
+            const xMovement = (Math.random() - 0.5) * 200;
+            
+            confetti.style.animation = `
+              fall ${animationDuration}s linear forwards,
+              sway ${animationDuration / 2}s ease-in-out infinite alternate
+            `;
+            
+            confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+            
+            const keyframes = `
+              @keyframes fall {
+                0% { transform: translateY(0) rotate(0); opacity: 1; }
+                90% { opacity: 1; }
+                100% { transform: translateY(${window.innerHeight}px) rotate(${Math.random() * 720}deg); opacity: 0; }
+              }
+              
+              @keyframes sway {
+                0% { transform: translateX(0) rotate(0); }
+                100% { transform: translateX(${xMovement}px) rotate(${Math.random() * 90}deg); }
+              }
+            `;
+            
+            const style = document.createElement('style');
+            style.innerHTML = keyframes;
+            document.head.appendChild(style);
+            
+            rewards.appendChild(confetti);
+            setTimeout(() => {
+              confetti.remove();
+              style.remove();
+            }, animationDuration * 1000);
+          }, i * 50);
+        }
+      }
+      
+      // Handle key presses
+      window.addEventListener("keyup", e => {
+        pressed.push(e.key);
+        if (pressed.length > 20) pressed.shift(); // Keep array size reasonable
+        
+        // Highlight the pressed key in the keyboard visual
+        const keyElement = document.querySelector(`.key[data-key="${e.key.toLowerCase()}"]`);
+        if (keyElement) {
+          keyElement.classList.add('pressed');
+          setTimeout(() => {
+            keyElement.classList.remove('pressed');
+          }, 300);
+        }
+        
+        // Play key sound
+        if (soundEnabled) {
+          const keySound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-single-key-press-in-a-laptop-2542.mp3');
+          keySound.volume = 0.2;
+          keySound.play();
+        }
+        
+        createKeyBadges();
+        updateProgressBar();
+      });
+      
+      // Toggle sound
+      soundToggle.addEventListener('click', () => {
+        soundEnabled = !soundEnabled;
+        soundToggle.innerHTML = soundEnabled ? '<i>🔊</i>' : '<i>🔇</i>';
+        
+        if (!soundEnabled && backgroundMusic.playing) {
+          backgroundMusic.pause();
+        } else if (soundEnabled && videoStarted) {
+          backgroundMusic.play();
+        }
+      });
+      
+      // Initialize
+      createKeyboard();
+      createKeyBadges();
+      
+      // Add some animation to the hint text
+      const hintText = document.querySelector('.hint-text');
+      setInterval(() => {
+        hintText.style.opacity = '0.6';
+        setTimeout(() => {
+          hintText.style.opacity = '1';
+        }, 500);
+      }, 2000);
+    </script>
+  </body>
+</html>

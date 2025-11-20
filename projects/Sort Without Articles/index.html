@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music Library Organizer</title>
+  <link rel="icon" href="https://fav.farm/🎵" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #6c5ce7;
+      --secondary: #a29bfe;
+      --accent: #fd79a8;
+      --light: #f8f9fa;
+      --dark: #2d3436;
+      --success: #00b894;
+      --danger: #d63031;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: var(--dark);
+      min-height: 100vh;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 800px;
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      margin-top: 2rem;
+    }
+    
+    header {
+      text-align: center;
+      padding: 2rem;
+      background-color: white;
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+    }
+    
+    .subtitle {
+      color: var(--dark);
+      opacity: 0.7;
+      font-size: 1.1rem;
+    }
+    
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: var(--light);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .view-options {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .view-btn {
+      background: none;
+      border: none;
+      color: var(--dark);
+      cursor: pointer;
+      font-size: 1.1rem;
+      opacity: 0.6;
+      transition: all 0.2s;
+    }
+    
+    .view-btn.active {
+      opacity: 1;
+      color: var(--primary);
+    }
+    
+    .view-btn:hover {
+      opacity: 1;
+    }
+    
+    .search-box {
+      display: flex;
+      align-items: center;
+      background-color: white;
+      border-radius: 30px;
+      padding: 0.5rem 1rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    .search-box i {
+      color: var(--dark);
+      opacity: 0.6;
+      margin-right: 0.5rem;
+    }
+    
+    .search-box input {
+      border: none;
+      outline: none;
+      background: none;
+      font-size: 1rem;
+      width: 200px;
+    }
+    
+    .add-form {
+      display: flex;
+      padding: 1rem 2rem;
+      gap: 0.5rem;
+      background-color: white;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .add-form input {
+      flex: 1;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+      padding: 0.6rem 1rem;
+      font-size: 1rem;
+      outline: none;
+    }
+    
+    .add-form input:focus {
+      border-color: var(--primary);
+    }
+    
+    .add-form button {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .add-form button:hover {
+      background-color: var(--secondary);
+    }
+    
+    .bands-container {
+      max-height: 60vh;
+      overflow-y: auto;
+      padding: 1rem 0;
+    }
+    
+    #bands {
+      list-style: none;
+      transition: all 0.3s;
+    }
+    
+    .list-view li {
+      padding: 1rem 2rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s;
+    }
+    
+    .list-view li:hover {
+      background-color: rgba(0, 0, 0, 0.02);
+    }
+    
+    .list-view li:last-child {
+      border-bottom: none;
+    }
+    
+    .grid-view {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      padding: 1rem 2rem;
+    }
+    
+    .grid-view li {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      text-align: center;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 150px;
+    }
+    
+    .grid-view li:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .band-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+    
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-left: 1rem;
+    }
+    
+    .action-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: all 0.2s;
+      font-size: 1rem;
+    }
+    
+    .action-btn:hover {
+      opacity: 1;
+    }
+    
+    .action-btn.edit {
+      color: var(--primary);
+    }
+    
+    .action-btn.delete {
+      color: var(--danger);
+    }
+    
+    .stats {
+      text-align: center;
+      padding: 1rem;
+      background-color: var(--light);
+      color: var(--dark);
+      opacity: 0.7;
+      font-size: 0.9rem;
+    }
+    
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        margin-top: 1rem;
+      }
+      
+      header {
+        padding: 1.5rem;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .controls {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .search-box {
+        width: 100%;
+      }
+      
+      .search-box input {
+        width: 100%;
+      }
+      
+      .grid-view {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Music Library Organizer</h1>
+      <p class="subtitle">Sort bands and artists without articles (a, an, the)</p>
+    </header>
+    
+    <div class="controls">
+      <div class="view-options">
+        <button class="view-btn active" id="list-view-btn">
+          <i class="fas fa-list"></i> List
+        </button>
+        <button class="view-btn" id="grid-view-btn">
+          <i class="fas fa-th"></i> Grid
+        </button>
+      </div>
+      
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="search" placeholder="Search artists...">
+      </div>
+    </div>
+    
+    <form class="add-form" id="add-form">
+      <input type="text" id="add-input" placeholder="Add a new artist or band...">
+      <button type="submit">Add</button>
+    </form>
+    
+    <div class="bands-container">
+      <ul id="bands" class="list-view"></ul>
+    </div>
+    
+    <div class="stats">
+      <span id="bands-count">0</span> artists in your collection
+    </div>
+  </div>
+
+  <script>
+    // Initial data
+    let bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
+    
+    // Save bands to local storage
+    function saveBands() {
+      localStorage.setItem('bands', JSON.stringify(bands));
+    }
+    
+    // Load bands from local storage
+    function loadBands() {
+      const storedBands = localStorage.getItem('bands');
+      if (storedBands) {
+        bands = JSON.parse(storedBands);
+      }
+    }
+    
+    // Strip articles for sorting
+    function strip(bandName) {
+      return bandName.replace(/^(a |the |an )/i, '').trim();
+    }
+    
+    // Sort and display bands
+    function displayBands(bandsToDisplay = bands) {
+      const sortedBands = bandsToDisplay.sort((a, b) => strip(a) > strip(b) ? 1 : -1);
+      
+      const bandsList = document.querySelector('#bands');
+      const isGridView = bandsList.classList.contains('grid-view');
+      
+      bandsList.innerHTML = sortedBands
+        .map(band => {
+          if (isGridView) {
+            return `
+              <li data-band="${band}">
+                <div class="band-icon"><i class="fas fa-music"></i></div>
+                <span>${band}</span>
+                <div class="actions">
+                  <button class="action-btn edit" title="Edit"><i class="fas fa-edit"></i></button>
+                  <button class="action-btn delete" title="Delete"><i class="fas fa-trash"></i></button>
+                </div>
+              </li>
+            `;
+          } else {
+            return `
+              <li data-band="${band}">
+                <span>${band}</span>
+                <div class="actions">
+                  <button class="action-btn edit" title="Edit"><i class="fas fa-edit"></i></button>
+                  <button class="action-btn delete" title="Delete"><i class="fas fa-trash"></i></button>
+                </div>
+              </li>
+            `;
+          }
+        })
+        .join('');
+        
+      // Update count
+      document.getElementById('bands-count').textContent = sortedBands.length;
+      
+      // Add event listeners to buttons
+      document.querySelectorAll('.action-btn.delete').forEach(btn => {
+        btn.addEventListener('click', handleDelete);
+      });
+      
+      document.querySelectorAll('.action-btn.edit').forEach(btn => {
+        btn.addEventListener('click', handleEdit);
+      });
+    }
+    
+    // Handle deleting a band
+    function handleDelete(e) {
+      const li = e.target.closest('li');
+      const bandToDelete = li.dataset.band;
+      
+      if (confirm(`Are you sure you want to remove "${bandToDelete}" from your collection?`)) {
+        bands = bands.filter(band => band !== bandToDelete);
+        saveBands();
+        displayBands();
+      }
+    }
+    
+    // Handle editing a band
+    function handleEdit(e) {
+      const li = e.target.closest('li');
+      const oldBandName = li.dataset.band;
+      const newBandName = prompt('Edit band name:', oldBandName);
+      
+      if (newBandName && newBandName.trim() !== '' && newBandName !== oldBandName) {
+        bands = bands.map(band => band === oldBandName ? newBandName.trim() : band);
+        saveBands();
+        displayBands();
+      }
+    }
+    
+    // Handle adding a new band
+    function handleAdd(e) {
+      e.preventDefault();
+      const input = document.getElementById('add-input');
+      const newBand = input.value.trim();
+      
+      if (newBand && !bands.includes(newBand)) {
+        bands.push(newBand);
+        saveBands();
+        displayBands();
+        input.value = '';
+      } else if (bands.includes(newBand)) {
+        alert('This artist is already in your collection!');
+      }
+      
+      input.focus();
+    }
+    
+    // Handle search
+    function handleSearch(e) {
+      const searchTerm = e.target.value.toLowerCase();
+      if (searchTerm === '') {
+        displayBands();
+      } else {
+        const filteredBands = bands.filter(band => 
+          band.toLowerCase().includes(searchTerm)
+        );
+        displayBands(filteredBands);
+      }
+    }
+    
+    // Switch view
+    function switchView(viewType) {
+      const bandsList = document.getElementById('bands');
+      const listBtn = document.getElementById('list-view-btn');
+      const gridBtn = document.getElementById('grid-view-btn');
+      
+      if (viewType === 'grid') {
+        bandsList.classList.remove('list-view');
+        bandsList.classList.add('grid-view');
+        listBtn.classList.remove('active');
+        gridBtn.classList.add('active');
+      } else {
+        bandsList.classList.remove('grid-view');
+        bandsList.classList.add('list-view');
+        gridBtn.classList.remove('active');
+        listBtn.classList.add('active');
+      }
+      
+      displayBands();
+    }
+    
+    // Initialize app
+    function init() {
+      loadBands();
+      displayBands();
+      
+      // Event listeners
+      document.getElementById('add-form').addEventListener('submit', handleAdd);
+      document.getElementById('search').addEventListener('input', handleSearch);
+      document.getElementById('list-view-btn').addEventListener('click', () => switchView('list'));
+      document.getElementById('grid-view-btn').addEventListener('click', () => switchView('grid'));
+    }
+    
+    // Start the app
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html> 

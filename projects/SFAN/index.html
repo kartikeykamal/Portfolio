@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kartikey Kamal - Connect</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <h1>Kartikey Kamal</h1>
+    <nav class="top-nav">
+      <div class="dropdown-background">
+        <span class="arrow"></span>
+      </div>
+
+      <ul class="nav-list">
+        <li>
+          <a href="#" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle"></i> About Me</a>
+          <div class="dropdown about-dropdown" role="menu">
+            <div class="bio">
+              <img src="https://via.placeholder.com/150" alt="Profile Picture" class="profile-pic">
+              <div class="bio-content">
+                <h3>Kartikey Kamal</h3>
+                <p>Web Developer passionate about creating interactive web experiences. Skilled in JavaScript, HTML, CSS and modern web development frameworks.</p>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <a href="#" aria-haspopup="true" aria-expanded="false"><i class="fas fa-code-branch"></i> Tech Stack</a>
+          <ul class="dropdown tech-dropdown" role="menu">
+            <li>
+              <span class="tech-tag">FRONT</span>
+              <div class="tech-item">
+                <h4>Frontend</h4>
+                <p>HTML, CSS, JavaScript, React</p>
+              </div>
+            </li>
+            <li>
+              <span class="tech-tag">BACK</span>
+              <div class="tech-item">
+                <h4>Backend</h4>
+                <p>Node.js, Express</p>
+              </div>
+            </li>
+            <li>
+              <span class="tech-tag">PROJECTS</span>
+              <div class="tech-item">
+                <h4>Recent Projects</h4>
+                <p>JS-Clock, JS-Drum, Video Player</p>
+              </div>
+            </li>
+            <li>
+              <span class="tech-tag">TOOLS</span>
+              <div class="tech-item">
+                <h4>Dev Tools</h4>
+                <p>Git, VS Code, Chrome DevTools</p>
+              </div>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#" aria-haspopup="true" aria-expanded="false"><i class="fas fa-link"></i> Connect</a>
+          <ul class="dropdown social-dropdown" role="menu">
+            <li>
+              <a class="social-button github" href="https://github.com/kartikeykamal" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-github"></i> GitHub
+              </a>
+            </li>
+            <li>
+              <a class="social-button linkedin" href="https://www.linkedin.com/in/kartikey-kamal-760147264/" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-linkedin"></i> LinkedIn
+              </a>
+            </li>
+            <li>
+              <a class="social-button twitter" href="https://twitter.com/yourhandle">
+                <i class="fab fa-twitter"></i> Twitter
+              </a>
+            </li>
+            <li>
+              <a class="social-button instagram" href="https://instagram.com/yourhandle">
+                <i class="fab fa-instagram"></i> Instagram
+              </a>
+            </li>
+            <li>
+              <a class="social-button email" href="mailto:your.email@example.com">
+                <i class="fas fa-envelope"></i> Email
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="content">
+      <div class="hero">
+        <h2>Welcome to my connect hub</h2>
+        <p>Hover or tap on the navigation items above to learn more about me and my work</p>
+      </div>
+    </div>
+  </div>
+
+<style>
+  :root {
+    --primary-color: #2a86e9;
+    --secondary-color: #38b2ac;
+    --accent-color: #6366f1;
+    --light-color: #f5f6fa;
+    --dark-color: #1a202c;
+    --github-color: #24292e;
+    --linkedin-color: #0077b5;
+    --twitter-color: #1da1f2;
+    --instagram-color: #e1306c;
+    --email-color: #00b894;
+    --transition-speed: 0.3s;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #4158D0, #C850C0);
+    color: var(--light-color);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  h1 {
+    text-align: center;
+    margin: 30px 0;
+    font-weight: 600;
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(to right, #4facfe, #00f2fe);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .top-nav {
+    position: relative;
+    perspective: 1000px;
+    z-index: 100;
+  }
+
+  .nav-list {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+
+  .nav-list > li {
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+
+  .nav-list > li > a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: 12px 24px;
+    display: inline-block;
+    border-radius: 30px;
+    transition: all var(--transition-speed);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    min-width: 170px;
+    text-align: center;
+  }
+
+  .nav-list > li > a:hover,
+  .nav-list > li > a:focus {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  .nav-list > li > a i {
+    margin-right: 8px;
+  }
+
+  .dropdown {
+    opacity: 0;
+    position: absolute;
+    overflow: hidden;
+    padding: 20px;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    border-radius: 10px;
+    transition: all var(--transition-speed) ease;
+    will-change: opacity, transform;
+    display: none;
+    background: white;
+    color: var(--dark-color);
+    min-width: 300px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    z-index: 200;
+  }
+
+  .about-dropdown {
+    min-width: 450px;
+  }
+
+  .trigger-enter .dropdown {
+    display: block;
+    pointer-events: auto;
+  }
+
+  .trigger-enter-active .dropdown {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .dropdown-background {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 50px 100px rgba(50, 50, 93, 0.1), 0 15px 35px rgba(50, 50, 93, 0.15), 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all var(--transition-speed) ease;
+    transform-origin: 50% 0;
+    display: flex;
+    justify-content: center;
+    opacity: 0;
+    z-index: 100;
+  }
+
+  .dropdown-background.open {
+    opacity: 1;
+  }
+
+  .arrow {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    display: block;
+    background: white;
+    transform: translateY(-50%) rotate(45deg);
+    top: 0;
+  }
+
+  .bio {
+    display: flex;
+    align-items: center;
+    line-height: 1.7;
+  }
+
+  .profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
+    border: 3px solid var(--primary-color);
+  }
+
+  .bio-content h3 {
+    margin-bottom: 8px;
+    color: var(--primary-color);
+  }
+
+  .tech-dropdown li, .social-dropdown li {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    transition: background-color 0.2s ease;
+  }
+
+  .tech-dropdown li:hover, .social-dropdown li:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+
+  .tech-dropdown li:last-child, .social-dropdown li:last-child {
+    border-bottom: none;
+  }
+
+  .tech-tag {
+    display: inline-block;
+    background: var(--accent-color);
+    color: white;
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-right: 8px;
+    vertical-align: top;
+    margin-top: 5px;
+  }
+
+  .tech-item {
+    display: inline-block;
+    width: calc(100% - 75px);
+    vertical-align: top;
+  }
+
+  .tech-item h4 {
+    margin: 0;
+    color: var(--primary-color);
+    font-size: 16px;
+  }
+
+  .tech-item p {
+    font-size: 14px;
+    color: #666;
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+
+  .social-button {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    padding: 12px 15px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    transition: all var(--transition-speed);
+  }
+
+  .social-button:hover,
+  .social-button:focus {
+    transform: translateX(5px);
+    filter: brightness(110%);
+    outline: none;
+  }
+
+  .social-button:last-child {
+    margin-bottom: 0;
+  }
+
+  .social-button i {
+    margin-right: 10px;
+    font-size: 20px;
+    min-width: 25px;
+    text-align: center;
+  }
+
+  .github {
+    background: var(--github-color);
+  }
+  
+  .linkedin {
+    background: var(--linkedin-color);
+  }
+  
+  .twitter {
+    background: var(--twitter-color);
+  }
+  
+  .instagram {
+    background: var(--instagram-color);
+  }
+  
+  .email {
+    background: var(--email-color);
+  }
+
+  .content {
+    margin-top: 100px;
+  }
+
+  .hero {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 50px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .hero h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+
+  .hero p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+  }
+
+  .nav-list > li > a:focus + .dropdown {
+    display: block;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+  }
+
+  @media (max-width: 768px) {
+    .nav-list {
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .nav-list > li > a {
+      min-width: 220px;
+    }
+
+    .dropdown {
+      position: relative;
+      top: 20px;
+      width: 100%;
+      max-width: 300px;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .about-dropdown {
+      min-width: 300px;
+    }
+
+    .bio {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .profile-pic {
+      margin-right: 0;
+      margin-bottom: 15px;
+    }
+
+    .tech-item {
+      width: calc(100% - 60px);
+    }
+  }
+
+  @media (hover: none) {
+    .nav-list > li > a:active + .dropdown {
+      display: block;
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  }
+</style>
+
+<script>
+  const menuItems = document.querySelectorAll('.nav-list > li');
+  const background = document.querySelector('.dropdown-background');
+  const nav = document.querySelector('.top-nav');
+
+  function handleEnter() {
+    this.classList.add('trigger-enter');
+    setTimeout(() => this.classList.contains('trigger-enter') && this.classList.add('trigger-enter-active'), 150);
+    
+    this.querySelector('a').setAttribute('aria-expanded', 'true');
+    
+    background.classList.add('open');
+
+    const dropdown = this.querySelector('.dropdown');
+    const dropdownCoords = dropdown.getBoundingClientRect();
+    const navCoords = nav.getBoundingClientRect();
+
+    const coords = {
+      height: dropdownCoords.height,
+      width: dropdownCoords.width,
+      top: dropdownCoords.top - navCoords.top,
+      left: dropdownCoords.left - navCoords.left
+    };
+
+    background.style.setProperty('width', `${coords.width}px`);
+    background.style.setProperty('height', `${coords.height}px`);
+    background.style.setProperty('transform', `translate(${coords.left}px, ${coords.top}px)`);
+  }
+
+  function handleLeave() {
+    this.classList.remove('trigger-enter', 'trigger-enter-active');
+    
+    this.querySelector('a').setAttribute('aria-expanded', 'false');
+    
+    background.classList.remove('open');
+  }
+
+  menuItems.forEach(item => item.addEventListener('mouseenter', handleEnter));
+  menuItems.forEach(item => item.addEventListener('mouseleave', handleLeave));
+
+  menuItems.forEach(item => {
+    const link = item.querySelector('a');
+    
+    link.addEventListener('focus', () => {
+      menuItems.forEach(i => {
+        if (i !== item) {
+          i.classList.remove('trigger-enter', 'trigger-enter-active');
+          i.querySelector('a').setAttribute('aria-expanded', 'false');
+        }
+      });
+      
+      handleEnter.call(item);
+    });
+    
+    link.addEventListener('blur', (e) => {
+      if (!item.contains(e.relatedTarget)) {
+        handleLeave.call(item);
+      }
+    });
+  });
+
+  if ('ontouchstart' in window) {
+    menuItems.forEach(item => {
+      const link = item.querySelector('a');
+      
+      link.addEventListener('click', (e) => {
+        if (!item.classList.contains('trigger-enter-active')) {
+          e.preventDefault();
+          
+          menuItems.forEach(i => {
+            if (i !== item) {
+              i.classList.remove('trigger-enter', 'trigger-enter-active');
+              i.querySelector('a').setAttribute('aria-expanded', 'false');
+            }
+          });
+          
+          handleEnter.call(item);
+        }
+      });
+    });
+    
+    document.addEventListener('click', (e) => {
+      const isOutside = !e.target.closest('.nav-list > li') && !e.target.closest('.dropdown');
+      
+      if (isOutside) {
+        menuItems.forEach(item => {
+          item.classList.remove('trigger-enter', 'trigger-enter-active');
+          item.querySelector('a').setAttribute('aria-expanded', 'false');
+        });
+        
+        background.classList.remove('open');
+      }
+    });
+  }
+</script>
+
+</body>
+</html> 

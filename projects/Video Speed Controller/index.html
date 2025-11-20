@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Video Speed Scrubber</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="https://fav.farm/✅" />
+</head>
+<body>
+
+  <div class="wrapper">
+    <video class="flex" width="765" height="430" loop controls>
+      <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm" type="video/webm">
+      <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
+      Your browser does not support the video tag or cannot access the video files.
+    </video>
+    <div class="speed">
+      <div class="speed-bar">1×</div>
+    </div>
+  </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const speed = document.querySelector('.speed');
+    const bar = speed.querySelector('.speed-bar');
+    const video = document.querySelector('.flex');
+    
+    bar.style.height = '10%';
+    bar.textContent = '1.00×';
+    
+    video.addEventListener('error', (e) => {
+      console.error('Video error:', e);
+      alert('Error loading video. Please check console for details.');
+    });
+    
+    function handleMove(e) {
+        const y = e.pageY - this.offsetTop;
+        const percent = y / this.offsetHeight;
+        const min = 0.4;
+        const max = 4;
+        const height = Math.round(percent * 100) + '%';
+        const playbackRate = percent * (max - min) + min;
+        bar.style.height = height;
+        bar.textContent = playbackRate.toFixed(2) + '×';
+        video.playbackRate = playbackRate;
+    }
+
+    speed.addEventListener('mousemove', handleMove);
+  });
+</script>
+</body>
+</html>

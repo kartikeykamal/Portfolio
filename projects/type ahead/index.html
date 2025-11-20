@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Enhanced Type Ahead 🔍</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="https://fav.farm/🌍" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <h1>Global Search</h1>
+    <form class="search-form">
+      <input type="text" class="search" placeholder="Search for a city, state, or country...">
+      <ul class="suggestions">
+        <li>Start typing to search...</li>
+      </ul>
+    </form>
+  </div>
+
+<script>
+const citiesEndpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+const countriesEndpoint = 'https://restcountries.com/v3.1/all';
+
+// Major Indian cities with their states and population
+const indianCities = [
+  { name: "Mumbai", state: "Maharashtra", population: 12478447 },
+  { name: "Delhi", state: "Delhi", population: 11034555 },
+  { name: "Bangalore", state: "Karnataka", population: 8443675 },
+  { name: "Hyderabad", state: "Telangana", population: 6809970 },
+  { name: "Chennai", state: "Tamil Nadu", population: 7088000 },
+  { name: "Kolkata", state: "West Bengal", population: 4486679 },
+  { name: "Ahmedabad", state: "Gujarat", population: 5570585 },
+  { name: "Pune", state: "Maharashtra", population: 3124458 },
+  { name: "Jaipur", state: "Rajasthan", population: 3073350 },
+  { name: "Lucknow", state: "Uttar Pradesh", population: 2817105 },
+  { name: "Kanpur", state: "Uttar Pradesh", population: 2765348 },
+  { name: "Nagpur", state: "Maharashtra", population: 2405665 },
+  { name: "Indore", state: "Madhya Pradesh", population: 1964086 },
+  { name: "Thane", state: "Maharashtra", population: 1841482 },
+  { name: "Bhopal", state: "Madhya Pradesh", population: 1798218 },
+  { name: "Visakhapatnam", state: "Andhra Pradesh", population: 1728128 },
+  { name: "Patna", state: "Bihar", population: 1684222 },
+  { name: "Vadodara", state: "Gujarat", population: 1670806 },
+  { name: "Ghaziabad", state: "Uttar Pradesh", population: 1648643 },
+  { name: "Ludhiana", state: "Punjab", population: 1618879 },
+  { name: "Coimbatore", state: "Tamil Nadu", population: 1600000 },
+  { name: "Kochi", state: "Kerala", population: 677381 },
+  { name: "Chandigarh", state: "Chandigarh", population: 1055450 },
+  { name: "Guwahati", state: "Assam", population: 963429 },
+  { name: "Amritsar", state: "Punjab", population: 1132383 },
+  { name: "Varanasi", state: "Uttar Pradesh", population: 1198491 },
+  { name: "Srinagar", state: "Jammu and Kashmir", population: 1180570 },
+  { name: "Agra", state: "Uttar Pradesh", population: 1585704 },
+  { name: "Surat", state: "Gujarat", population: 4467797 },
+  { name: "Nashik", state: "Maharashtra", population: 1486053 }
+];
+
+const locations = [];
+
+// Add Indian cities to locations array
+indianCities.forEach(city => {
+  locations.push({
+    name: city.name,
+    type: 'City',
+    state: city.state,
+    population: city.population,
+    country: 'India'
+  });
+});
+
+// Fetch cities data
+fetch(citiesEndpoint)
+  .then(blob => blob.json())
+  .then(data => {
+    const citiesData = data.map(city => ({
+      name: city.city,
+      type: 'City',
+      state: city.state,
+      population: city.population,
+      country: 'USA'
+    }));
+    locations.push(...citiesData);
+  });
+
+// Fetch countries data
+fetch(countriesEndpoint)
+  .then(blob => blob.json())
+  .then(data => {
+    const countriesData = data.map(country => ({
+      name: country.name.common,
+      type: 'Country',
+      state: country.region,
+      population: country.population,
+      country: country.name.common
+    }));
+    locations.push(...countriesData);
+  });
+
+function findMatches(wordToMatch, locations) {
+  return locations.filter(place => {
+    const regex = new RegExp(wordToMatch, 'gi');
+    return place.name.match(regex) || place.state.match(regex) || place.country.match(regex);
+  });
+}
+
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+function displayMatches() {
+  if (!this.value) {
+    suggestions.innerHTML = '<li>Start typing to search...</li>';
+    return;
+  }
+
+  const matchArray = findMatches(this.value, locations);
+  const html = matchArray.map(place => {
+    const regex = new RegExp(this.value, 'gi');
+    const name = place.name.replace(regex, `<span class="hl">${this.value}</span>`);
+    const state = place.state.replace(regex, `<span class="hl">${this.value}</span>`);
+    const country = place.country.replace(regex, `<span class="hl">${this.value}</span>`);
+    return `
+      <li>
+        <div class="location-info">
+          <span class="name">${name}</span>
+          <span class="type">${place.type}</span>
+        </div>
+        <div class="details">
+          <span class="state">${state}, ${country}</span>
+          <span class="population">Population: ${numberWithCommas(place.population)}</span>
+        </div>
+      </li>
+    `;
+  }).join('');
+  suggestions.innerHTML = html;
+}
+
+const searchInput = document.querySelector('.search');
+const suggestions = document.querySelector('.suggestions');
+
+searchInput.addEventListener('input', displayMatches);
+</script>
+</body>
+</html>
