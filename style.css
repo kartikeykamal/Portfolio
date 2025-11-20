@@ -395,7 +395,7 @@ article .icon {
   position: relative;
   margin-top: 2.5rem;
   padding: 0 3rem;
-  overflow: auto;
+  overflow: visible;
 }
 
 .projects-grid {
@@ -403,12 +403,14 @@ article .icon {
   grid-auto-flow: column;
   grid-auto-columns: minmax(280px, calc((100% - 3rem) / 3));
   gap: 3rem;
-  overflow-x: hidden;
+  overflow-x: auto;
   overflow-y: hidden;
   padding: 0 2rem 1rem;
   scroll-snap-type: x mandatory;
   scroll-padding: 0 1.5rem;
   scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
 }
 
 .projects-grid::-webkit-scrollbar {
@@ -750,6 +752,9 @@ article .icon {
   .projects-grid {
     grid-auto-columns: minmax(250px, calc((100% - 1.5rem) / 2));
     gap: 2rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
   }
 
   .projects-scroll-btn {
@@ -967,6 +972,10 @@ article .icon {
     grid-auto-columns: calc(100% - 2rem);
     gap: 1.5rem;
     padding: 0 1rem 1rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+    scroll-snap-type: x mandatory;
   }
 
   .project-card {
@@ -1076,6 +1085,9 @@ article .icon {
   .projects-grid {
     grid-auto-columns: calc(100% - 1rem);
     padding: 0 0.5rem 1rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
   }
 
   .project-card {
